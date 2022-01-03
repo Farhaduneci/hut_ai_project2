@@ -191,7 +191,7 @@ hr {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(211, 224, 234, 0.5);
+  background: rgba(211, 224, 234, 0.9);
   z-index: 100;
   text-align: center;
   -webkit-animation: fade-in 800ms ease 1200ms;
@@ -633,6 +633,26 @@ hr {
   float: right;
 }
 
+.agent-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: absolute;
+  right: 45px;
+  bottom: 30px;
+}
+.agent-buttons .button {
+  display: inline-block;
+  background: black;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  text-align: center;
+}
+
 .game-explanation {
   margin-top: 50px;
 }
@@ -709,7 +729,7 @@ hr {
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(211, 224, 234, 0.5);
+    background: rgba(211, 224, 234, 0.9);
     z-index: 100;
     text-align: center;
     -webkit-animation: fade-in 800ms ease 1200ms;

@@ -201,7 +201,7 @@ hr {
       right: 0;
       bottom: 0;
       left: 0;
-      background: rgba($tile-color, .5);
+      background: rgba($tile-color, .9);
       z-index: 100;
 
       text-align: center;
@@ -466,6 +466,20 @@ hr {
   display: block;
   text-align: center;
   float: right;
+}
+
+.agent-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: absolute;
+  right: 45px;
+  bottom: 30px;
+
+  .button {
+    @include button;
+    text-align: center;
+  }
 }
 
 .game-explanation {

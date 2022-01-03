@@ -73,6 +73,9 @@ KeyboardInputManager.prototype.listen = function () {
   this.bindButtonPress(".restart-button", this.restart);
   this.bindButtonPress(".keep-playing-button", this.keepPlaying);
 
+  this.bindButtonPress(".agent-mini-max", this.agentMiniMax)
+  this.bindButtonPress(".agent-alpha-beta", this.agentAlphaBeta)
+
   // Respond to swipe events
   var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
@@ -130,6 +133,16 @@ KeyboardInputManager.prototype.listen = function () {
 KeyboardInputManager.prototype.restart = function (event) {
   event.preventDefault();
   this.emit("restart");
+};
+
+KeyboardInputManager.prototype.agentMiniMax = function (event) {
+  event.preventDefault();
+  this.emit("agentMiniMax");
+};
+
+KeyboardInputManager.prototype.agentAlphaBeta = function (event) {
+  event.preventDefault();
+  this.emit("agentAlphaBeta");
 };
 
 KeyboardInputManager.prototype.keepPlaying = function (event) {
