@@ -102,7 +102,7 @@ Grid.prototype.withinBounds = function (position) {
 Grid.prototype.evaluate = function () {
     let sum = 0;
     this.eachCell((_x, _y, tile) =>
-        tile ? sum += tile.value : null);
+        tile ? null : sum += 1);
 
     return sum;
 }

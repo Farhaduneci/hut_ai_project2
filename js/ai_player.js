@@ -1,7 +1,7 @@
-function AiPlayer(mode, gameManager) {
+function AiPlayer(mode, gameManager, lastMovement) {
     this.gameManager = gameManager;
     this.gameManagerClone = this.cloneGM(gameManager);
-    mode == "miniMax" ? this.runMiniMax() : this.runAlphaBeta();
+    return mode == "miniMax" ? this.runMiniMax(lastMovement) : this.runAlphaBeta(lastMovement);
 }
 
 AiPlayer.prototype.cloneGM = function (gameManager) {
@@ -35,43 +35,50 @@ function randomInt(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-AiPlayer.prototype.runMiniMax = function () {
-    let bestMove = this.miniMax(this.gameManager.depth, true);
-    console.log(bestMove);
-    this.gameManager.move(bestMove.move);
+AiPlayer.prototype.runMiniMax = function (lastMovement) {
+    let bestMove = this.miniMax(this.gameManager.depth, true, lastMovement);
+    let moved = this.gameManager.move(bestMove.move);
+
+    return { moved, bestMove };
 }
 
-AiPlayer.prototype.miniMax = function (depth, maximizingPlayer) {
+AiPlayer.prototype.miniMax = function (depth, maximizingPlayer, lastMovement) {
     if (depth == 0 || !this.gameManagerClone.movesAvailable() || this.gameManagerClone.isGameTerminated()) {
         return { move: null, score: this.gameManagerClone.grid.evaluate() };
+    }
+
+    let validMoves = [0, 1, 2, 3];
+
+    if (lastMovement && !lastMovement.moved) {
+        validMoves = arrayRemove(validMoves, lastMovement.bestMove.move);
     }
 
     if (maximizingPlayer) {
         let bestScore = -Infinity;
 
-        for (var i = 3; i >= 0; i--) {
-            this.gameManagerClone.move(i);
+        validMoves.forEach(movement => {
+            this.gameManagerClone.move(movement);
             moveBestScore = Math.max(bestScore, this.miniMax(depth - 1, false).score);
 
             if (moveBestScore > bestScore) {
                 bestScore = moveBestScore;
-                bestMove = i;
+                bestMove = movement;
             }
-        }
+        });
 
         return { move: bestMove, score: bestScore };
     } else {
         let bestScore = Infinity;
 
-        for (var i = 0; i < 4; i++) {
-            this.gameManagerClone.move(i);
+        validMoves.forEach(movement => {
+            this.gameManagerClone.move(movement);
             moveBestScore = Math.min(bestScore, this.miniMax(depth - 1, true).score);
 
             if (moveBestScore < bestScore) {
                 bestScore = moveBestScore;
-                bestMove = i;
+                bestMove = movement;
             }
-        }
+        });
 
         return { move: bestMove, score: moveBestScore };
     }
@@ -82,4 +89,11 @@ AiPlayer.prototype.runAlphaBeta = function () {
 
 AiPlayer.prototype.alphaBeta = function (depth, alpha, beta, maximizingPlayer) {
 
+}
+
+function arrayRemove(arr, value) {
+
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
 }

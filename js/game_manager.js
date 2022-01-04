@@ -17,6 +17,8 @@ function GameManager(size, InputManager, Actuator, StorageManager, animationTime
   this.setup();
 }
 
+let aiRunning = false;
+
 // Restart the game
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
@@ -31,18 +33,32 @@ GameManager.prototype.keepPlaying = function () {
 };
 
 GameManager.prototype.agentMiniMax = async function () {
-  while (this.movesAvailable() && !this.isGameTerminated()) {
-    new AiPlayer("miniMax", this);
+  aiRunning = true;
+  let counter = 1;
+  let move = null;
+  while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
+    move = new AiPlayer("miniMax", this, move);
+    console.log("Iteration: " + counter++);
     await sleep(this.animationTime);
   }
 }
 
-GameManager.prototype.agentAlphaBeta = function () {
-  while (this.movesAvailable() && !this.isGameTerminated()) {
+GameManager.prototype.agentAlphaBeta = async function () {
+  aiRunning = true;
+  let counter = 1;
+  while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
     new AiPlayer("alphaBeta", this);
+    console.log("Iteration: " + counter++);
     await sleep(this.animationTime);
   }
 }
+
+document.addEventListener("keydown", function (event) {
+  if (event.key == "Escape") {
+    aiRunning = false;
+    console.log("Stopped AI");
+  }
+})
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -209,7 +225,10 @@ GameManager.prototype.move = function (direction) {
     }
 
     this.actuate();
+    return true;
   }
+
+  return false;
 };
 
 // Get the vector representing the chosen direction
