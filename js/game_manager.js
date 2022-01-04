@@ -1,8 +1,10 @@
-function GameManager(size, InputManager, Actuator, StorageManager) {
+function GameManager(size, InputManager, Actuator, StorageManager, animationTime, depth) {
   this.size = size; // Size of the grid
   this.inputManager = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator = new Actuator;
+  this.animationTime = animationTime || 500; // The lower the slower
+  this.depth = depth || 4;
 
   this.startTiles = 2;
 
@@ -31,16 +33,19 @@ GameManager.prototype.keepPlaying = function () {
 GameManager.prototype.agentMiniMax = async function () {
   while (this.movesAvailable() && !this.isGameTerminated()) {
     new AiPlayer("miniMax", this);
-    await sleep(200);
+    await sleep(this.animationTime);
+  }
+}
+
+GameManager.prototype.agentAlphaBeta = function () {
+  while (this.movesAvailable() && !this.isGameTerminated()) {
+    new AiPlayer("alphaBeta", this);
+    await sleep(this.animationTime);
   }
 }
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-GameManager.prototype.agentAlphaBeta = function () {
-  new AiPlayer("alphaBeta", this);
 }
 
 // Return true if the game is lost, or has won and the user hasn't kept playing

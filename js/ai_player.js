@@ -31,8 +31,12 @@ function StubManager() { }
 
 StubManager.prototype.on = StubManager.prototype.clearGameState = StubManager.prototype.continueGame = StubManager.prototype.getGameState = StubManager.prototype.getBestScore = StubManager.prototype.setBestScore = StubManager.prototype.clearGameState = StubManager.prototype.setGameState = StubManager.prototype.actuate = StubManager.prototype.get = StubManager.prototype.set = nullFunc;
 
+function randomInt(min, max) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 AiPlayer.prototype.runMiniMax = function () {
-    let bestMove = this.miniMax(6, true);
+    let bestMove = this.miniMax(this.gameManager.depth, true);
     console.log(bestMove);
     this.gameManager.move(bestMove.move);
 }
@@ -45,10 +49,9 @@ AiPlayer.prototype.miniMax = function (depth, maximizingPlayer) {
     if (maximizingPlayer) {
         let bestScore = -Infinity;
 
-        for (var i = 0; i < 4; i++) {
+        for (var i = 3; i >= 0; i--) {
             this.gameManagerClone.move(i);
-            let score = this.miniMax(depth - 1, false).score;
-            moveBestScore = Math.max(bestScore, score);
+            moveBestScore = Math.max(bestScore, this.miniMax(depth - 1, false).score);
 
             if (moveBestScore > bestScore) {
                 bestScore = moveBestScore;
@@ -58,13 +61,19 @@ AiPlayer.prototype.miniMax = function (depth, maximizingPlayer) {
 
         return { move: bestMove, score: bestScore };
     } else {
-        this.gameManagerClone.addRandomTile();
+        let bestScore = Infinity;
 
-        let bestScore = this.gameManagerClone.grid.evaluate();
+        for (var i = 0; i < 4; i++) {
+            this.gameManagerClone.move(i);
+            moveBestScore = Math.min(bestScore, this.miniMax(depth - 1, true).score);
 
-        moveBestScore = Math.min(bestScore, this.miniMax(depth - 1, true).score);
+            if (moveBestScore < bestScore) {
+                bestScore = moveBestScore;
+                bestMove = i;
+            }
+        }
 
-        return { move: null, score: bestScore };
+        return { move: bestMove, score: moveBestScore };
     }
 }
 

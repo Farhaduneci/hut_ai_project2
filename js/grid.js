@@ -107,7 +107,6 @@ Grid.prototype.evaluate = function () {
     return sum;
 }
 
-
 Grid.prototype.serialize = function () {
     var cellState = [];
 
