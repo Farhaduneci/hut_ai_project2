@@ -1,5 +1,6 @@
 @import "fonts/clear-sans.css";
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: #D8E3E7;
@@ -24,6 +25,15 @@ h1.title {
   margin: 0;
   display: block;
   float: left;
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 @-webkit-keyframes $animation-name {
@@ -61,7 +71,8 @@ h1.title {
   text-align: right;
 }
 
-.score-container, .best-container {
+.score-container,
+.best-container {
   position: relative;
   display: inline-block;
   background: #041C32;
@@ -75,7 +86,8 @@ h1.title {
   margin-top: 8px;
   text-align: center;
 }
-.score-container:after, .best-container:after {
+.score-container:after,
+.best-container:after {
   position: absolute;
   width: 100%;
   top: 10px;
@@ -86,7 +98,8 @@ h1.title {
   text-align: center;
   color: #D3E0EA;
 }
-.score-container .score-addition, .best-container .score-addition {
+.score-container .score-addition,
+.best-container .score-addition {
   position: absolute;
   right: 30px;
   color: red;
@@ -227,7 +240,7 @@ hr {
   display: none;
 }
 .game-container .game-message.game-won {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.3);
   color: #f9f6f2;
 }
 .game-container .game-message.game-won a.keep-playing-button {
@@ -271,7 +284,8 @@ hr {
   z-index: 2;
 }
 
-.tile, .tile .tile-inner {
+.tile,
+.tile .tile-inner {
   width: 107px;
   height: 107px;
   line-height: 107px;
@@ -417,7 +431,7 @@ hr {
 .tile.tile-128 .tile-inner {
   color: #f9f6f2;
   background: #545a5e;
-  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.2380952381), inset 0 0 0 1px rgba(255, 255, 255, 0.1428571429);
+  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.2380952381), inset 0 0 0 1px rgba(255, 255, 255, 0.0857142857);
   font-size: 45px;
 }
 @media screen and (max-width: 520px) {
@@ -428,7 +442,7 @@ hr {
 .tile.tile-256 .tile-inner {
   color: #f9f6f2;
   background: #3f4346;
-  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.3174603175), inset 0 0 0 1px rgba(255, 255, 255, 0.1904761905);
+  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.3174603175), inset 0 0 0 1px rgba(255, 255, 255, 0.1142857143);
   font-size: 45px;
 }
 @media screen and (max-width: 520px) {
@@ -439,7 +453,7 @@ hr {
 .tile.tile-512 .tile-inner {
   color: #f9f6f2;
   background: #2a2d2f;
-  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.3968253968), inset 0 0 0 1px rgba(255, 255, 255, 0.2380952381);
+  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.3968253968), inset 0 0 0 1px rgba(255, 255, 255, 0.1428571429);
   font-size: 45px;
 }
 @media screen and (max-width: 520px) {
@@ -450,7 +464,7 @@ hr {
 .tile.tile-1024 .tile-inner {
   color: #f9f6f2;
   background: #151617;
-  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.4761904762), inset 0 0 0 1px rgba(255, 255, 255, 0.2857142857);
+  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.4761904762), inset 0 0 0 1px rgba(255, 255, 255, 0.1714285714);
   font-size: 35px;
 }
 @media screen and (max-width: 520px) {
@@ -461,7 +475,7 @@ hr {
 .tile.tile-2048 .tile-inner {
   color: #f9f6f2;
   background: black;
-  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.5555555556), inset 0 0 0 1px rgba(255, 255, 255, 0.3333333333);
+  box-shadow: 0 0 30px 10px rgba(26, 26, 26, 0.5555555556), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   font-size: 35px;
 }
 @media screen and (max-width: 520px) {
@@ -658,7 +672,8 @@ hr {
 }
 
 @media screen and (max-width: 520px) {
-  html, body {
+  html,
+body {
     font-size: 15px;
   }
 
@@ -677,7 +692,8 @@ hr {
     margin: 0 auto;
   }
 
-  .score-container, .best-container {
+  .score-container,
+.best-container {
     margin-top: 0;
     padding: 15px 10px;
     min-width: 40px;
@@ -765,7 +781,7 @@ hr {
     display: none;
   }
   .game-container .game-message.game-won {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.3);
     color: #f9f6f2;
   }
   .game-container .game-message.game-won a.keep-playing-button {
@@ -809,7 +825,8 @@ hr {
     z-index: 2;
   }
 
-  .tile, .tile .tile-inner {
+  .tile,
+.tile .tile-inner {
     width: 107px;
     height: 107px;
     line-height: 107px;
