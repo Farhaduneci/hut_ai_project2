@@ -28,8 +28,15 @@ GameManager.prototype.keepPlaying = function () {
   this.actuator.continueGame(); // Clear the game won/lost message
 };
 
-GameManager.prototype.agentMiniMax = function () {
-  new AiPlayer("miniMax", this);
+GameManager.prototype.agentMiniMax = async function () {
+  while (this.movesAvailable() && !this.isGameTerminated()) {
+    new AiPlayer("miniMax", this);
+    await sleep(200);
+  }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 GameManager.prototype.agentAlphaBeta = function () {

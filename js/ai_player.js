@@ -32,14 +32,15 @@ function StubManager() { }
 StubManager.prototype.on = StubManager.prototype.clearGameState = StubManager.prototype.continueGame = StubManager.prototype.getGameState = StubManager.prototype.getBestScore = StubManager.prototype.setBestScore = StubManager.prototype.clearGameState = StubManager.prototype.setGameState = StubManager.prototype.actuate = StubManager.prototype.get = StubManager.prototype.set = nullFunc;
 
 AiPlayer.prototype.runMiniMax = function () {
-    console.log(
-        bestMove = this.miniMax(6, true)
-    );
+    let bestMove = this.miniMax(6, true);
+    console.log(bestMove);
+    this.gameManager.move(bestMove.move);
 }
 
 AiPlayer.prototype.miniMax = function (depth, maximizingPlayer) {
-    if (depth == 0 || !this.gameManagerClone.movesAvailable() || this.gameManagerClone.isGameTerminated())
+    if (depth == 0 || !this.gameManagerClone.movesAvailable() || this.gameManagerClone.isGameTerminated()) {
         return { move: null, score: this.gameManagerClone.grid.evaluate() };
+    }
 
     if (maximizingPlayer) {
         let bestScore = -Infinity;
