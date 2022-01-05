@@ -130,6 +130,11 @@ p {
   line-height: 1.65;
 }
 
+.sub-info {
+  margin: 0 !important;
+  font-size: x-large !important;
+}
+
 a {
   color: #132C33;
   font-weight: bold;
@@ -181,6 +186,7 @@ hr {
   margin-top: 40px;
   position: relative;
   padding: 15px;
+  overflow: hidden;
   cursor: default;
   -webkit-touch-callout: none;
   -ms-touch-callout: none;
@@ -722,6 +728,7 @@ body {
     margin-top: 40px;
     position: relative;
     padding: 15px;
+    overflow: hidden;
     cursor: default;
     -webkit-touch-callout: none;
     -ms-touch-callout: none;

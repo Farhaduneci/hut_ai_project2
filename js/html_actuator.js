@@ -26,9 +26,9 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     if (metadata.terminated) {
       if (metadata.over) {
-        self.message(false); // You lose
+        self.message(false, metadata.iterations); // You lose
       } else if (metadata.won) {
-        self.message(true); // You win!
+        self.message(true, metadata.iterations); // You win!
       }
     }
 
@@ -124,12 +124,13 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
 };
 
-HTMLActuator.prototype.message = function (won) {
+HTMLActuator.prototype.message = function (won, info) {
   var type = won ? "game-won" : "game-over";
-  var message = won ? "You won!" : "Game over!";
+  var message = won ? "You Won!" : "Game over!";
 
   this.messageContainer.classList.add(type);
   this.messageContainer.getElementsByTagName("p")[0].textContent = message;
+  this.messageContainer.getElementsByTagName("p")[1].textContent = `Ran ${info} iterations.`;
 };
 
 HTMLActuator.prototype.clearMessage = function () {

@@ -1,10 +1,12 @@
-function GameManager(size, InputManager, Actuator, StorageManager, animationTime, depth) {
+function GameManager(size, InputManager, Actuator, StorageManager, animationTime, depth, debug) {
   this.size = size; // Size of the grid
   this.inputManager = new InputManager;
   this.storageManager = new StorageManager;
   this.actuator = new Actuator;
   this.animationTime = animationTime || 500; // The lower the slower
   this.depth = depth || 4;
+  this.debug = debug || false;
+  this.counter = 1;
 
   this.startTiles = 2;
 
@@ -23,6 +25,7 @@ let aiRunning = false;
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message
+  this.counter = 1;
   this.setup();
 };
 
@@ -34,34 +37,38 @@ GameManager.prototype.keepPlaying = function () {
 
 GameManager.prototype.agentMiniMax = async function () {
   aiRunning = true;
-  let counter = 1;
-  let move = null;
+  let moveInformation = null;
+
   while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
-    move = new AiPlayer("miniMax", this, move);
-    console.log("Iteration: " + counter++);
+    moveInformation = new AiPlayer("miniMax", this, moveInformation);
+
+    this.counter++;
+
+    if (this.debug) {
+      console.log("Iteration: " + this.counter);
+      console.log(moveInformation);
+    }
+
     await sleep(this.animationTime);
   }
 }
 
 GameManager.prototype.agentAlphaBeta = async function () {
   aiRunning = true;
-  let counter = 1;
+  let moveInformation = null;
+
   while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
-    new AiPlayer("alphaBeta", this);
-    console.log("Iteration: " + counter++);
+    moveInformation = new AiPlayer("alphaBeta", this, moveInformation);
+
+    this.counter++;
+
+    if (this.debug) {
+      console.log("Iteration: " + this.counter);
+      console.log(moveInformation);
+    }
+
     await sleep(this.animationTime);
   }
-}
-
-document.addEventListener("keydown", function (event) {
-  if (event.key == "Escape") {
-    aiRunning = false;
-    console.log("Stopped AI");
-  }
-})
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Return true if the game is lost, or has won and the user hasn't kept playing
@@ -130,6 +137,7 @@ GameManager.prototype.actuate = function () {
     score: this.score,
     over: this.over,
     won: this.won,
+    iterations: this.counter,
     bestScore: this.storageManager.getBestScore(),
     terminated: this.isGameTerminated()
   });
@@ -311,3 +319,16 @@ GameManager.prototype.tileMatchesAvailable = function () {
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
 };
+
+/* ---------------------------- Helper Functions ---------------------------- */
+
+document.addEventListener("keydown", function (event) {
+  if (event.key == "Escape") {
+    aiRunning = false;
+    console.log("Stopped AI");
+  }
+})
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
