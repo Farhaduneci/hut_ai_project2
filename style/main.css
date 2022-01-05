@@ -148,9 +148,9 @@ strong.important {
 
 hr {
   border: none;
-  border-bottom: 1px solid #53a7bf;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  margin-top: 25px;
+  margin-bottom: 15px;
 }
 
 .container {
@@ -671,10 +671,6 @@ hr {
   height: 40px;
   line-height: 42px;
   text-align: center;
-}
-
-.game-explanation {
-  margin-top: 50px;
 }
 
 @media screen and (max-width: 520px) {

@@ -36,7 +36,7 @@ AiPlayer.prototype.miniMax = function (depth, maximizingPlayer, lastMovement) {
         return { move: null, score: this.gameManagerClone.grid.evaluate() };
     }
 
-    let validMoves = [0, 1, 2, 3];
+    let validMoves = [0, 1, 2, 3]; // up, right, down, left
 
     if (lastMovement && !lastMovement.moved) {
         validMoves = arrayDifference(validMoves, lastMovement.blockedMoves);
@@ -77,11 +77,78 @@ AiPlayer.prototype.miniMax = function (depth, maximizingPlayer, lastMovement) {
 /*                            Alpha-Beta Functions                            */
 /* -------------------------------------------------------------------------- */
 
-AiPlayer.prototype.runAlphaBeta = function () {
+AiPlayer.prototype.runAlphaBeta = function (lastMovement) {
+    // Determine the best move and return if this choice moved tiles or not
+    let bestMove = this.alphaBeta(this.gameManager.depth, -Infinity, Infinity, true, lastMovement);
+    let moved = this.gameManager.move(bestMove.move);
+
+    let blockedMoves = new Array();
+
+    if (lastMovement && !moved) {
+        blockedMoves = lastMovement.blockedMoves.indexOf(bestMove.move) === -1
+            ? lastMovement.blockedMoves.concat(bestMove.move)
+            : blockedMoves;
+    }
+
+    return {
+        moved,
+        bestMove,
+        blockedMoves
+    };
 }
 
-AiPlayer.prototype.alphaBeta = function (depth, alpha, beta, maximizingPlayer) {
+AiPlayer.prototype.alphaBeta = function (depth, alpha, beta, maximizingPlayer, lastMovement) {
+    if (depth == 0 || !this.gameManagerClone.movesAvailable() || this.gameManagerClone.isGameTerminated()) {
+        return { move: null, score: this.gameManagerClone.grid.evaluate() };
+    }
 
+    let validMoves = [0, 1, 2, 3]; // up, right, down, left
+
+    if (lastMovement && !lastMovement.moved) {
+        validMoves = arrayDifference(validMoves, lastMovement.blockedMoves);
+    }
+
+    if (maximizingPlayer) {
+        let bestScore = -Infinity;
+
+        validMoves.forEach(movement => {
+            this.gameManagerClone.move(movement);
+            moveBestScore = Math.max(bestScore, this.alphaBeta(depth - 1, alpha, beta, false).score);
+
+            if (moveBestScore > bestScore) {
+                bestScore = moveBestScore;
+                bestMove = movement;
+            }
+
+            alpha = Math.max(alpha, bestScore);
+
+            if (beta <= alpha) {
+                return { move: bestMove, score: bestScore };
+            }
+        });
+
+        return { move: bestMove, score: bestScore };
+    } else {
+        let bestScore = Infinity;
+
+        validMoves.forEach(movement => {
+            this.gameManagerClone.move(movement);
+            moveBestScore = Math.min(bestScore, this.alphaBeta(depth - 1, alpha, beta, true).score);
+
+            if (moveBestScore < bestScore) {
+                bestScore = moveBestScore;
+                bestMove = movement;
+            }
+
+            beta = Math.min(beta, bestScore);
+
+            if (beta <= alpha) {
+                return { move: bestMove, score: bestScore };
+            }
+        });
+
+        return { move: bestMove, score: bestScore };
+    }
 }
 
 /* ---------------------------- Helper Functions ---------------------------- */

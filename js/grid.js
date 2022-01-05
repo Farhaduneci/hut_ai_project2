@@ -99,14 +99,6 @@ Grid.prototype.withinBounds = function (position) {
         position.y >= 0 && position.y < this.size;
 };
 
-Grid.prototype.evaluate = function () {
-    let sum = 0;
-    this.eachCell((_x, _y, tile) =>
-        tile ? sum += tile.value : null);
-
-    return sum;
-}
-
 Grid.prototype.serialize = function () {
     var cellState = [];
 
@@ -123,3 +115,64 @@ Grid.prototype.serialize = function () {
         cells: cellState
     };
 };
+
+/* ------------------- Terminal Nodes Evaluation Function ------------------- */
+
+Grid.prototype.evaluate = function () {
+    return this.evaluateEmptyTiles() +
+        (
+            this.evaluateSmoothness() +
+            this.evaluateMonotonicity()
+        );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             Heuristic Functions                             */
+/* -------------------------------------------------------------------------- */
+
+Grid.prototype.evaluateEmptyTiles = function () {
+    let sum = 0;
+    this.eachCell((_x, _y, tile) => tile ? sum += 1 : null);
+
+    return sum;
+}
+
+Grid.prototype.evaluateSmoothness = function () {
+    let sum = 0;
+    this.eachCell((x, y, tile) => {
+        let left = this.cellContent({ x: x - 1, y: y });
+        let right = this.cellContent({ x: x + 1, y: y });
+        let up = this.cellContent({ x: x, y: y - 1 });
+        let down = this.cellContent({ x: x, y: y + 1 });
+
+        if (left && right && tile) {
+            sum += Math.abs(left.value - right.value);
+        }
+
+        if (up && down && tile) {
+            sum += Math.abs(up.value - down.value);
+        }
+    });
+
+    return sum;
+}
+
+Grid.prototype.evaluateMonotonicity = function () {
+    let sum = 0;
+    this.eachCell((x, y, tile) => {
+        let left = this.cellContent({ x: x - 1, y: y });
+        let right = this.cellContent({ x: x + 1, y: y });
+        let up = this.cellContent({ x: x, y: y - 1 });
+        let down = this.cellContent({ x: x, y: y + 1 });
+
+        if (left && right && tile) {
+            sum += Math.abs(left.value - tile.value) + Math.abs(right.value - tile.value);
+        }
+
+        if (up && down && tile) {
+            sum += Math.abs(up.value - tile.value) + Math.abs(down.value - tile.value);
+        }
+    });
+
+    return sum;
+}

@@ -35,42 +35,6 @@ GameManager.prototype.keepPlaying = function () {
   this.actuator.continueGame(); // Clear the game won/lost message
 };
 
-GameManager.prototype.agentMiniMax = async function () {
-  aiRunning = true;
-  let moveInformation = null;
-
-  while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
-    moveInformation = new AiPlayer("miniMax", this, moveInformation);
-
-    this.counter++;
-
-    if (this.debug) {
-      console.log("Iteration: " + this.counter);
-      console.log(moveInformation);
-    }
-
-    await sleep(this.animationTime);
-  }
-}
-
-GameManager.prototype.agentAlphaBeta = async function () {
-  aiRunning = true;
-  let moveInformation = null;
-
-  while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
-    moveInformation = new AiPlayer("alphaBeta", this, moveInformation);
-
-    this.counter++;
-
-    if (this.debug) {
-      console.log("Iteration: " + this.counter);
-      console.log(moveInformation);
-    }
-
-    await sleep(this.animationTime);
-  }
-}
-
 // Return true if the game is lost, or has won and the user hasn't kept playing
 GameManager.prototype.isGameTerminated = function () {
   return this.over || (this.won && !this.keepPlaying);
@@ -319,6 +283,46 @@ GameManager.prototype.tileMatchesAvailable = function () {
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
 };
+
+/* -------------------------------------------------------------------------- */
+/*                             AI Agent Functions                             */
+/* -------------------------------------------------------------------------- */
+
+GameManager.prototype.agentMiniMax = async function () {
+  aiRunning = true;
+  let moveInformation = null;
+
+  while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
+    moveInformation = new AiPlayer("miniMax", this, moveInformation);
+
+    this.counter++;
+
+    if (this.debug) {
+      console.log("Iteration: " + this.counter);
+      console.log(moveInformation);
+    }
+
+    await sleep(this.animationTime);
+  }
+}
+
+GameManager.prototype.agentAlphaBeta = async function () {
+  aiRunning = true;
+  let moveInformation = null;
+
+  while (this.movesAvailable() && !this.isGameTerminated() && aiRunning) {
+    moveInformation = new AiPlayer("alphaBeta", this, moveInformation);
+
+    this.counter++;
+
+    if (this.debug) {
+      console.log("Iteration: " + this.counter);
+      console.log(moveInformation);
+    }
+
+    await sleep(this.animationTime);
+  }
+}
 
 /* ---------------------------- Helper Functions ---------------------------- */
 
