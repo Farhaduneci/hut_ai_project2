@@ -7,4 +7,4 @@ Mini-Max and α-β pruning Mini-Max algorithms.
 
 ## Demo
 
-![Demo](./Images/Demo.webm)
+![Demo](./Images/Demo.png)
